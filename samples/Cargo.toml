@@ -1,0 +1,13 @@
+[package]
+name = "samples"
+version.workspace = true
+authors.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+typed_grid.workspace = true
+
+extend.workspace = true

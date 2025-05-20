@@ -1,0 +1,23 @@
+[workspace]
+resolver = "2"
+members = ["typed_grid", "typed_grid_macro", "samples"]
+default-members = ["typed_grid", "typed_grid_macro"]
+
+[workspace.package]
+version = "0.1.0"
+authors = ["Tomislav Grospić <grospic@gmail.com>"]
+edition = "2024"
+homepage = ""
+repository = "https://github.com/tgrospic/typed-grid-rs"
+rust-version = "1.85"
+
+[workspace.dependencies]
+typed_grid = { path = "typed_grid" }
+typed_grid_macro = { path = "typed_grid_macro" }
+samples = { path = "samples" }
+
+derive-new = "0.7"
+extend = "1"
+proc-macro2 = "1"
+quote = "1"
+syn = "2"
