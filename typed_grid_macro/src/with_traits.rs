@@ -1,3 +1,4 @@
+use itertools::iproduct;
 use proc_macro2::*;
 use quote::quote;
 
@@ -10,38 +11,36 @@ pub fn typed_grid(cols: usize, rows: usize) -> TokenStream {
     let mut enum_variants = vec![];
     let mut movements = vec![];
 
-    for x in 0..cols {
-        for y in 0..rows {
-            let name = Ident::new(&position_struct(x, y), Span::call_site());
-            structs.push(quote! {
-                #[derive(Debug)]
-                pub struct #name;
-            });
-            enum_variants.push(quote! {
-                #name(#name),
-            });
+    for (x, y) in iproduct!(0..cols, 0..rows) {
+        let name = Ident::new(&position_struct(x, y), Span::call_site());
+        structs.push(quote! {
+            #[derive(Debug)]
+            pub struct #name;
+        });
+        enum_variants.push(quote! {
+            #name(#name),
+        });
 
-            let current = quote! { #name };
+        let current = quote! { #name };
 
-            // RIGHT
-            if x + 1 < cols {
-                movements.push(gen_move_impl("MoveRight", "right", &current, x + 1, y));
-            }
+        // RIGHT
+        if x + 1 < cols {
+            movements.push(gen_move_impl("MoveRight", "right", &current, x + 1, y));
+        }
 
-            // LEFT
-            if x > 0 {
-                movements.push(gen_move_impl("MoveLeft", "left", &current, x - 1, y));
-            }
+        // LEFT
+        if x > 0 {
+            movements.push(gen_move_impl("MoveLeft", "left", &current, x - 1, y));
+        }
 
-            // DOWN
-            if y > 0 {
-                movements.push(gen_move_impl("MoveDown", "down", &current, x, y - 1));
-            }
+        // DOWN
+        if y > 0 {
+            movements.push(gen_move_impl("MoveDown", "down", &current, x, y - 1));
+        }
 
-            // UP
-            if y + 1 < rows {
-                movements.push(gen_move_impl("MoveUp", "up", &current, x, y + 1));
-            }
+        // UP
+        if y + 1 < rows {
+            movements.push(gen_move_impl("MoveUp", "up", &current, x, y + 1));
         }
     }
 

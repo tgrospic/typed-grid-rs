@@ -18,6 +18,7 @@ samples = { path = "samples" }
 
 derive-new = "0.7"
 extend = "1"
+itertools = "0.14"
 proc-macro2 = "1"
 quote = "1"
 syn = "2"

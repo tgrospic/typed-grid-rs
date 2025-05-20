@@ -1,4 +1,5 @@
 use crate::with_traits::position_struct;
+use itertools::iproduct;
 use proc_macro2::*;
 use quote::quote;
 
@@ -12,46 +13,44 @@ pub fn typed_grid_ext(cols: usize, rows: usize) -> TokenStream {
     let mut traits = vec![];
     let mut movements = vec![];
 
-    for x in 0..cols {
-        for y in 0..rows {
-            let name = Ident::new(&position_struct(x, y), Span::call_site());
-            let iname = Ident::new(&position_trait(x, y), Span::call_site());
+    for (x, y) in iproduct!(0..cols, 0..rows) {
+        let name = Ident::new(&position_struct(x, y), Span::call_site());
+        let iname = Ident::new(&position_trait(x, y), Span::call_site());
 
-            structs.push(quote! {
-                #[derive(std::fmt::Debug)]
-                pub struct #name;
-            });
+        structs.push(quote! {
+            #[derive(std::fmt::Debug)]
+            pub struct #name;
+        });
 
-            enum_variants.push(quote! {
-                #name(#name),
-            });
+        enum_variants.push(quote! {
+            #name(#name),
+        });
 
-            traits.push(quote! {
-                pub trait #iname<T>: IContext<T> + std::fmt::Debug {}
-                impl<T: std::fmt::Debug> #iname<T> for Ctx<#name, T> {}
-            });
+        traits.push(quote! {
+            pub trait #iname<T>: IContext<T> + std::fmt::Debug {}
+            impl<T: std::fmt::Debug> #iname<T> for Ctx<#name, T> {}
+        });
 
-            let current = quote! { #iname };
+        let current = quote! { #iname };
 
-            // RIGHT
-            if x + 1 < cols {
-                movements.push(gen_move_ext("right", &current, x + 1, y));
-            }
+        // RIGHT
+        if x + 1 < cols {
+            movements.push(gen_move_ext("right", &current, x + 1, y));
+        }
 
-            // LEFT
-            if x > 0 {
-                movements.push(gen_move_ext("left", &current, x - 1, y));
-            }
+        // LEFT
+        if x > 0 {
+            movements.push(gen_move_ext("left", &current, x - 1, y));
+        }
 
-            // DOWN
-            if y > 0 {
-                movements.push(gen_move_ext("down", &current, x, y - 1));
-            }
+        // DOWN
+        if y > 0 {
+            movements.push(gen_move_ext("down", &current, x, y - 1));
+        }
 
-            // UP
-            if y + 1 < rows {
-                movements.push(gen_move_ext("up", &current, x, y + 1));
-            }
+        // UP
+        if y + 1 < rows {
+            movements.push(gen_move_ext("up", &current, x, y + 1));
         }
     }
 
