@@ -10,6 +10,8 @@ edition = "2024"
 homepage = ""
 repository = "https://github.com/tgrospic/typed-grid-rs"
 rust-version = "1.85"
+description = "Macro generator for typed grid navigation"
+license = "LICENSE"
 
 [workspace.dependencies]
 typed_grid = { path = "typed_grid" }
