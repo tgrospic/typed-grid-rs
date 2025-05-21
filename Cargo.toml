@@ -15,7 +15,7 @@ license = "LICENSE"
 
 [workspace.dependencies]
 typed_grid = { path = "typed_grid" }
-typed_grid_macro = { path = "typed_grid_macro" }
+typed_grid_macro = { version = "0.1", path = "typed_grid_macro" }
 
 derive-new = "0.7"
 extend = "1"
