@@ -23,3 +23,11 @@ itertools = "0.14"
 proc-macro2 = "1"
 quote = "1"
 syn = "2"
+
+[workspace.metadata.release]
+push = true # push git tags to remote
+tag = true  # creates Git tag for version
+allow-branch = ["master"]
+sign-commit = true
+sign-tag = true
+consolidate-commits = true
