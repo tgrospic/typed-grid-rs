@@ -11,6 +11,7 @@ homepage = "https://github.com/tgrospic/typed-grid-rs"
 repository = "https://github.com/tgrospic/typed-grid-rs.git"
 rust-version = "1.85"
 description = "Macro generator for typed grid navigation"
+license = "MIT"
 license-file = "LICENSE"
 
 [workspace.dependencies]
