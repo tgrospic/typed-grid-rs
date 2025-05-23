@@ -1,3 +1,6 @@
+//! This is internal component (procedural macro implementation) of
+//! [`typed_grid`](https://crates.io/crates/typed_grid).
+
 mod input;
 mod with_ext;
 mod with_traits;
@@ -8,7 +11,7 @@ use syn::parse_macro_input;
 
 /// Generates types for grid navigation.
 ///
-/// ```rs
+/// ```rust,ignore
 /// use typed_grid_macro::*;
 ///
 /// typed_grid!(2, 2);
@@ -29,7 +32,7 @@ pub fn typed_grid(input: TokenStream) -> TokenStream {
 
 /// Generates types for grid navigation with extension methods.
 ///
-/// ```rs
+/// ```rust,ignore
 /// use typed_grid_macro::*;
 ///
 /// typed_grid_ext!(2, 2);

@@ -1,30 +1,4 @@
-//! A macro to generate grid navigation (left/right/up/down) types that allows only moves
-//! inside of grid, offering compile time check of movements.
-//!
-//! To track movements and support custom state, generated `Moved` must be implemented for
-//! the state carried throughout the movements.
-//!
-//! ```
-//! use typed_grid::*;
-//!
-//! typed_grid!(2, 2);
-//!
-//! impl Moved for i32 {
-//!     fn moved(&mut self, p: Position) {
-//!         *self += 1;
-//!         println!("MOVED: {p:?} {self}")
-//!     }
-//! }
-//!
-//! fn run(start: Ctx<Pos0x0, i32>) -> Ctx<Pos0x0, i32> {
-//!     start.right().up().down().left()
-//! }
-//!
-//! // State is a number for which `Moved` is implemented
-//! let pos = Ctx(Pos0x0, 42);
-//! let pos = pos.right().up().down().left();
-//! let pos = run(pos);
-//! ```
+#![doc = include_str!("../../README.md")]
 
 pub use typed_grid_macro::{typed_grid, typed_grid_ext};
 
