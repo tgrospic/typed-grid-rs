@@ -31,3 +31,4 @@ allow-branch = ["master"]
 sign-commit = true
 sign-tag = true
 consolidate-commits = true
+pre-release-commit-message = "chore: release"
