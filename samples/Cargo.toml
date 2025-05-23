@@ -9,7 +9,6 @@ repository.workspace = true
 rust-version.workspace = true
 description.workspace = true
 license.workspace = true
-license-file.workspace = true
 
 [dependencies]
 typed_grid.workspace = true
