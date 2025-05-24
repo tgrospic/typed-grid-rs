@@ -11,7 +11,7 @@ use syn::parse_macro_input;
 /// Generates types for grid navigation.
 ///
 /// ```rust,ignore
-/// use typed_grid_macro::*;
+/// use typed_grid::*;
 ///
 /// typed_grid!(2, 2);
 ///
@@ -32,7 +32,7 @@ pub fn typed_grid(input: TokenStream) -> TokenStream {
 /// Generates types for grid navigation with extension methods.
 ///
 /// ```rust,ignore
-/// use typed_grid_macro::*;
+/// use typed_grid::*;
 ///
 /// typed_grid_ext!(2, 2);
 ///
