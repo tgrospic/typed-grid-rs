@@ -1,0 +1,81 @@
+name: Build and test
+
+on:
+  push:
+    branches:
+    - trying
+    - staging
+    # Until support to verify master branch integrity
+    - main
+    tags: '**'
+  pull_request:
+    branches:
+    - main
+    - 'feature/**'
+    - 'release/**'
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: 🚀 Build and test
+    runs-on: ubuntu-latest
+
+    env:
+      # Enable sccache build optimization
+      SCCACHE_GHA_ENABLED: "true"
+      RUSTC_WRAPPER: "sccache"
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Cache
+      uses: Swatinem/rust-cache@v2
+      with:
+        cache-targets: false
+
+    - name: Run sccache-cache
+      uses: mozilla-actions/sccache-action@v0.0.9
+
+    - name: Install Rust with clippy and rustfmt
+      uses: dtolnay/rust-toolchain@master
+      with:
+        toolchain: stable
+        components: rustfmt, clippy
+
+    - name: Install Just
+      uses: cargo install just
+
+    - name: Install Nextest
+      uses: taiki-e/install-action@nextest
+
+    - name: Check formatting
+      run: cargo fmt --all -- --check
+
+    - name: Build
+      run: RUST_BACKTRACE=1 just build
+
+    - name: Clippy check
+      # No color output for problem matcher to capture
+      run: |
+        echo "::add-matcher::.github/rust-problems.json"
+        cargo clippy --workspace --all-features --tests --bins --benches --color never
+        echo "::remove-matcher owner=rust-compiler::"
+        echo "::remove-matcher owner=rust-fmt::"
+        echo "::remove-matcher owner=rust-panic::"
+
+    - name: Run docs generator
+      run: |
+        echo "::add-matcher::.github/rust-problems.json"
+        cargo doc --workspace --bins --no-deps --document-private-items --color never
+        echo "::remove-matcher owner=rust-compiler::"
+        echo "::remove-matcher owner=rust-fmt::"
+        echo "::remove-matcher owner=rust-panic::"
+
+    - name: Run tests
+      # Doc tests runs separately, not yet supported in Nextest - https://nexte.st/#quick-start
+      run: |
+        RUST_BACKTRACE=1 RUST_LOG=trace cargo nextest run --workspace --all-features
+        RUST_BACKTRACE=1 RUST_LOG=trace cargo test --workspace --all-features --doc
