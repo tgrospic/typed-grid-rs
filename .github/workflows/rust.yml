@@ -46,7 +46,7 @@ jobs:
         components: rustfmt, clippy
 
     - name: Install Just
-      uses: cargo install just
+      run: cargo install just
 
     - name: Install Nextest
       uses: taiki-e/install-action@nextest
