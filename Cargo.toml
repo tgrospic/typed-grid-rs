@@ -4,7 +4,7 @@ members = ["typed_grid", "typed_grid_macro", "samples"]
 default-members = ["typed_grid", "typed_grid_macro"]
 
 [workspace.package]
-version = "0.1.4"
+version = "0.1.5"
 authors = ["Tomislav Grospić <grospic@gmail.com>"]
 edition = "2024"
 homepage = "https://github.com/tgrospic/typed-grid-rs"
