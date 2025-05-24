@@ -12,7 +12,7 @@ test: readme
     cargo test --workspace
 
 release level: readme
-    cd {{crate_name}} && cargo release {{level}} --execute
+    cargo release {{level}} --execute
 
 clean:
     cargo clean
