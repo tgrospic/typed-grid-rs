@@ -6,11 +6,11 @@ on:
     - trying
     - staging
     # Until support to verify master branch integrity
-    - main
+    - master
     tags: '**'
   pull_request:
     branches:
-    - main
+    - master
     - 'feature/**'
     - 'release/**'
 
