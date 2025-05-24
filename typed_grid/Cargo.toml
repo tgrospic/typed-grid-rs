@@ -8,6 +8,7 @@ repository.workspace = true
 rust-version.workspace = true
 description.workspace = true
 license.workspace = true
+readme.workspace = true
 
 [dependencies]
 typed_grid_macro.workspace = true

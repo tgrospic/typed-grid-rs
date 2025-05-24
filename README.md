@@ -1,8 +1,8 @@
 # Typed grid
 
-[![Crates.io](https://img.shields.io/crates/v/typed_grid)](https://crates.io/crates/typed_grid)
-[![Docs.rs](https://img.shields.io/docsrs/typed_grid)](https://docs.rs/typed_grid)
-[![License](https://img.shields.io/crates/l/typed_grid)](https://crates.io/crates/typed_grid)
+[![Crates.io](https://img.shields.io/crates/v/typed_grid)](https://crates.io/crates/typed_grid)&nbsp;
+[![Docs.rs](https://img.shields.io/docsrs/typed_grid)](https://docs.rs/typed_grid)&nbsp;
+[![License](https://img.shields.io/crates/l/typed_grid?t=1)](https://crates.io/crates/typed_grid)&nbsp;
 
 **Strongly typed grid navigation in Rust with compile-time movement constraints.**
 

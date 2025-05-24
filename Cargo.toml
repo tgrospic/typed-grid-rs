@@ -12,6 +12,7 @@ repository = "https://github.com/tgrospic/typed-grid-rs.git"
 rust-version = "1.85"
 description = "Macro generator for typed grid navigation"
 license = "MIT"
+readme = "README.md"
 
 [workspace.dependencies]
 typed_grid = { path = "typed_grid" }
