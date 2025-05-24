@@ -9,7 +9,21 @@ build: readme
     cargo build --workspace
 
 test: readme
-    cargo test --workspace
+    # Doc tests runs separately, not yet supported in Nextest - https://nexte.st/#quick-start
+    cargo nextest run --workspace --all-features
+    cargo test --workspace --all-features --doc
+
+clippy: readme
+    cargo clippy --workspace --all-features --tests --bins --benches
+
+clippy-no-color: readme
+    cargo clippy --workspace --all-features --tests --bins --benches --color never
+
+doc: readme
+    cargo doc --workspace --bins --no-deps --document-private-items
+
+doc-no-color: readme
+    cargo doc --workspace --bins --no-deps --document-private-items --color never
 
 release level: readme
     cargo release {{level}} --execute

@@ -6,11 +6,11 @@ on:
     - trying
     - staging
     # Until support to verify master branch integrity
-    - main
+    - master
     tags: '**'
   pull_request:
     branches:
-    - main
+    - master
     - 'feature/**'
     - 'release/**'
 
@@ -19,7 +19,7 @@ env:
 
 jobs:
   build:
-    name: 🚀 Build and test
+    name: 🚀 Build & test
     runs-on: ubuntu-latest
 
     env:
@@ -31,7 +31,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Cache
+    - name: Run Rust cache
       uses: Swatinem/rust-cache@v2
       with:
         cache-targets: false
@@ -43,7 +43,7 @@ jobs:
       uses: dtolnay/rust-toolchain@master
       with:
         toolchain: stable
-        components: rustfmt, clippy
+        components: clippy, rustfmt
 
     - name: Install Just
       run: cargo install just
@@ -61,7 +61,7 @@ jobs:
       # No color output for problem matcher to capture
       run: |
         echo "::add-matcher::.github/rust-problems.json"
-        cargo clippy --workspace --all-features --tests --bins --benches --color never
+        just clippy-no-color
         echo "::remove-matcher owner=rust-compiler::"
         echo "::remove-matcher owner=rust-fmt::"
         echo "::remove-matcher owner=rust-panic::"
@@ -69,13 +69,10 @@ jobs:
     - name: Run docs generator
       run: |
         echo "::add-matcher::.github/rust-problems.json"
-        cargo doc --workspace --bins --no-deps --document-private-items --color never
+        just doc-no-color
         echo "::remove-matcher owner=rust-compiler::"
         echo "::remove-matcher owner=rust-fmt::"
         echo "::remove-matcher owner=rust-panic::"
 
     - name: Run tests
-      # Doc tests runs separately, not yet supported in Nextest - https://nexte.st/#quick-start
-      run: |
-        RUST_BACKTRACE=1 RUST_LOG=trace cargo nextest run --workspace --all-features
-        RUST_BACKTRACE=1 RUST_LOG=trace cargo test --workspace --all-features --doc
+      run: RUST_BACKTRACE=1 RUST_LOG=trace just test
