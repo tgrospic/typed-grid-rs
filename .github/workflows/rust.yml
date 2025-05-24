@@ -43,7 +43,7 @@ jobs:
       uses: dtolnay/rust-toolchain@master
       with:
         toolchain: stable
-        components: rustfmt, clippy
+        components: clippy, rustfmt
 
     - name: Install Just
       run: cargo install just
