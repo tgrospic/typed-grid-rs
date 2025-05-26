@@ -16,25 +16,18 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
+  # Enable sccache build optimization
+  SCCACHE_GHA_ENABLED: "true"
+  RUSTC_WRAPPER: "sccache"
 
 jobs:
   build:
     name: 🚀 Build & test
     runs-on: ubuntu-latest
 
-    env:
-      # Enable sccache build optimization
-      SCCACHE_GHA_ENABLED: "true"
-      RUSTC_WRAPPER: "sccache"
-
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-
-    - name: Run Rust cache
-      uses: Swatinem/rust-cache@v2
-      with:
-        cache-targets: false
 
     - name: Run sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.9
@@ -45,19 +38,24 @@ jobs:
         toolchain: stable
         components: clippy, rustfmt
 
+    - name: Run Rust cache
+      uses: Swatinem/rust-cache@v2
+      with:
+        cache-targets: false
+
     - name: Install Just
       run: cargo install just
 
     - name: Install Nextest
       uses: taiki-e/install-action@nextest
 
-    - name: Check formatting
+    - name: 🔨 Run formatting check
       run: cargo fmt --all -- --check
 
-    - name: Build
+    - name: 🚀 Run build
       run: RUST_BACKTRACE=1 just build
 
-    - name: Clippy check
+    - name: 🔨 Run clippy check
       # No color output for problem matcher to capture
       run: |
         echo "::add-matcher::.github/rust-problems.json"
@@ -66,7 +64,7 @@ jobs:
         echo "::remove-matcher owner=rust-fmt::"
         echo "::remove-matcher owner=rust-panic::"
 
-    - name: Run docs generator
+    - name: 🔨 Run docs generator
       run: |
         echo "::add-matcher::.github/rust-problems.json"
         just doc-no-color
@@ -74,5 +72,5 @@ jobs:
         echo "::remove-matcher owner=rust-fmt::"
         echo "::remove-matcher owner=rust-panic::"
 
-    - name: Run tests
+    - name: 🚦 Run tests
       run: RUST_BACKTRACE=1 RUST_LOG=trace just test
