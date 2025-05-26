@@ -17,8 +17,8 @@ on:
 env:
   CARGO_TERM_COLOR: always
   # Enable sccache build optimization
-  SCCACHE_GHA_ENABLED: "true"
-  RUSTC_WRAPPER: "sccache"
+  SCCACHE_GHA_ENABLED: true
+  RUSTC_WRAPPER: sccache
 
 jobs:
   build:
@@ -32,11 +32,8 @@ jobs:
     - name: Run sccache-cache
       uses: mozilla-actions/sccache-action@v0.0.9
 
-    - name: Install Rust with clippy and rustfmt
-      uses: dtolnay/rust-toolchain@master
-      with:
-        toolchain: stable
-        components: clippy, rustfmt
+    - name: Install Rust
+      uses: dtolnay/rust-toolchain@stable
 
     - name: Run Rust cache
       uses: Swatinem/rust-cache@v2
