@@ -29,9 +29,6 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Install sccache
-      uses: mozilla-actions/sccache-action@v0.0.9
-
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
 
@@ -39,6 +36,11 @@ jobs:
       uses: Swatinem/rust-cache@v2
       with:
         cache-targets: false
+
+    - name: Install sccache
+      env:
+        RUSTC_WRAPPER: ""
+      run: cargo install sccache
 
     - name: Install Just
       run: cargo install just
