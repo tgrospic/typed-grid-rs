@@ -29,13 +29,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - name: Run sccache-cache
+    - name: Install sccache
       uses: mozilla-actions/sccache-action@v0.0.9
 
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
 
-    - name: Run Rust cache
+    - name: Install Rust cache
       uses: Swatinem/rust-cache@v2
       with:
         cache-targets: false
