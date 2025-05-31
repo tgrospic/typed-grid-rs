@@ -1,4 +1,4 @@
-#![doc = include_str!("../README.md")]
+#![doc = include_str!("../../README.md")]
 
 pub use typed_grid_macro::{typed_grid, typed_grid_ext};
 
