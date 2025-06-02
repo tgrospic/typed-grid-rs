@@ -71,3 +71,7 @@ jobs:
 
     - name: 🚦 Run tests
       run: RUST_BACKTRACE=1 RUST_LOG=trace just test
+
+    # To ensure publish constraints are satisfied
+    - name: Check publish dry-run
+      run: cargo publish --dry-run -p typed_grid
