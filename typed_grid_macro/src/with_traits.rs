@@ -2,6 +2,24 @@ use itertools::iproduct;
 use proc_macro2::*;
 use quote::quote;
 
+#[derive(Debug)]
+pub enum Direction {
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+impl Direction {
+    pub fn trait_name(&self) -> String {
+        format!("Move{:?}", self)
+    }
+
+    pub fn method_name(&self) -> String {
+        format!("{:?}", self).to_lowercase()
+    }
+}
+
 pub fn position_struct(x: usize, y: usize) -> String {
     format!("Pos{}x{}", x, y)
 }
@@ -23,25 +41,17 @@ pub fn typed_grid(cols: usize, rows: usize) -> TokenStream {
 
         let current = quote! { #name };
 
-        // RIGHT
-        if x + 1 < cols {
-            movements.push(gen_move_impl("MoveRight", "right", &current, x + 1, y));
-        }
-
-        // LEFT
-        if x > 0 {
-            movements.push(gen_move_impl("MoveLeft", "left", &current, x - 1, y));
-        }
-
-        // DOWN
-        if y > 0 {
-            movements.push(gen_move_impl("MoveDown", "down", &current, x, y - 1));
-        }
-
-        // UP
-        if y + 1 < rows {
-            movements.push(gen_move_impl("MoveUp", "up", &current, x, y + 1));
-        }
+        movements.extend(
+            [
+                (x + 1 < cols).then(|| (Direction::Right, x + 1, y)),
+                (x > 0).then(|| (Direction::Left, x - 1, y)),
+                (y > 0).then(|| (Direction::Down, x, y - 1)),
+                (y + 1 < rows).then(|| (Direction::Up, x, y + 1)),
+            ]
+            .into_iter()
+            .flatten()
+            .map(|(direction, x, y)| gen_move_impl(direction, &current, x, y)),
+        );
     }
 
     quote! {
@@ -68,14 +78,13 @@ pub fn typed_grid(cols: usize, rows: usize) -> TokenStream {
 }
 
 pub fn gen_move_impl(
-    direction_trait: &str,
-    direction_method: &str,
+    dir: Direction,
     current_position: &TokenStream,
     target_x: usize,
     target_y: usize,
 ) -> TokenStream {
-    let direction = Ident::new(direction_trait, Span::call_site());
-    let move_method = Ident::new(direction_method, Span::call_site());
+    let direction = Ident::new(&dir.trait_name(), Span::call_site());
+    let move_method = Ident::new(&dir.method_name(), Span::call_site());
     let target_struct = Ident::new(&position_struct(target_x, target_y), Span::call_site());
 
     quote! {
